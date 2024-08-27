@@ -32,6 +32,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.300</version>
+        </dependency>
+
         <!-- spring validation -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -39,7 +45,11 @@
             <version>${spring-validation.version}</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.6</version>
+        </dependency>
 
         <dependency>
             <groupId>com.auth0</groupId>
@@ -95,6 +105,12 @@
             <version>3.1.0.RELEASE</version>
         </dependency>
 
+        <!--接口文档-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
+            <version>4.4.0</version>
+        </dependency>
 
 
 
@@ -120,6 +136,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
             <optional>true</optional>
         </dependency>
 
