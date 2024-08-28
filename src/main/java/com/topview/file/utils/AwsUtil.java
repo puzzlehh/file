@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.topview.file.entity.dto.UploadFileDto;
 import com.topview.file.entity.po.FileMetadata;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
@@ -14,6 +15,7 @@ import io.minio.PutObjectArgs;
 import io.minio.errors.MinioException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,37 +51,6 @@ public class AwsUtil {
     @Resource
     AmazonS3 s3Client;
 
-
-    public void uploadFile() {
-        // MinIO 的访问密钥和秘密密钥
-        String minioEndpoint = "http://10.21.32.237:9000"; // MinIO 的地址
-
-        // 创建 AWS S3 客户端
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(accessKey, secretKey);
-        AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(minioEndpoint, "us-east-1")) // 区域可以设置为任意值
-                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
-                .withPathStyleAccessEnabled(true) // 启用路径样式访问
-                .build();
-
-        // 创建桶
-        String bucketName = "test";
-
-        if (!s3Client.doesBucketExistV2(bucketName)) {
-            s3Client.createBucket(bucketName);
-            System.out.println("Bucket created: " + bucketName);
-        } else {
-            System.out.println("Bucket already exists: " + bucketName);
-        }
-
-        // 上传文件
-        File file = new File("README.md"); // 本地文件路径
-        s3Client.putObject(new PutObjectRequest(bucketName, "README.md", file));
-
-
-        System.out.println("File uploaded: " + file.getName());
-    }
-
     /**
      * 返回文件路径
      *
@@ -87,7 +58,7 @@ public class AwsUtil {
      * @return
      * @throws Exception
      */
-    public String uploadFile(MultipartFile file, FileMetadata fileMetadata) {
+    public String uploadFile(MultipartFile file, UploadFileDto fileMetadata) {
         String filename = fileMetadata.getFileName();
         String contentType = file.getContentType();
 
@@ -113,6 +84,9 @@ public class AwsUtil {
         PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, newFilename, inputStream, null);
         s3Client.putObject(putObjectRequest);
         return newFilename;
+    }
 
+    public InputStream exportFile(String filePath){
+        return s3Client.getObject(bucketName, filePath).getObjectContent();
     }
 }
