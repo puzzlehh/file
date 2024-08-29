@@ -14,4 +14,6 @@ import java.util.List;
 @Data
 public class ExportFileDto {
     List<Integer> ids;
+
+    private Integer activityId;
 }
