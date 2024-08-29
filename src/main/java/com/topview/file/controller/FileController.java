@@ -7,6 +7,7 @@ import com.topview.file.entity.dto.UploadFileDto;
 import com.topview.file.entity.po.FileMetadata;
 import com.topview.file.service.FileService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.util.StreamUtils;
@@ -33,6 +34,7 @@ public class FileController {
     private FileService fileService;
 
     @PostMapping("/upload")
+    @ApiOperation("上传文件")
     public CommonResult<Integer> upload(@ApiParam(value = "需要上传的文件")
                                         @RequestPart("multipartFile") MultipartFile multipartFile,
                                         @ApiParam(value = "需要传入文件描述fileDescribe和文件名fileName,并转成json字符串发送")

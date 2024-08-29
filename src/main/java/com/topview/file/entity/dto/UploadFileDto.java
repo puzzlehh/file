@@ -12,4 +12,9 @@ public class UploadFileDto {
     private String fileName;
 
     private String fileDescription;
+
+    //活动id
+    private Integer activityId;
+
+
 }
